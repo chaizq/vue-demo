@@ -1,19 +1,17 @@
 <template>
   <a-layout-content style="margin: 0 16px">
     <a-breadcrumb style="margin: 16px 0; text-align: left">
-      <a-breadcrumb-item>User</a-breadcrumb-item>
+      <a-breadcrumb-item>Service</a-breadcrumb-item>
       <a-breadcrumb-item>{{$t(routeName)}}</a-breadcrumb-item>
     </a-breadcrumb>
-    <label>{{ $t('AA') }}</label>
+    <label>{{ $t('Register') }}</label>
     <div class="content">
-      Bill is a cat.
+      Service Register
     </div>
   </a-layout-content>
 </template>
 
 <script>
-  // const a=this.$route.query.route;
-  // import BasicLayout from "../../layouts/BasicLayout";
 
   export default {
     data() {
@@ -22,10 +20,9 @@
         // routeName: this.$route.query.routeName,
       };
     },
-
-    name: "MenuManagement",
+    name: "ServiceRegister",
     components: {
-      // BasicLayout
+
     },
     methods:{
 

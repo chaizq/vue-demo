@@ -3,6 +3,7 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 import { Button, Layout, Menu, Breadcrumb, Icon, Col, Row } from 'ant-design-vue'
 import router from "../config/router/router.config"
+import i18n from './i18n'
 
 Vue.config.productionTip = false
 // Layout
@@ -30,5 +31,6 @@ Vue.component(Row.name,Row)
 new Vue({
   el: '#app',
   router,
-  render: h => h(App),
+  i18n,
+  render: h => h(App)
 }).$mount('#app')

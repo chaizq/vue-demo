@@ -1,0 +1,14 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "rules": {
+    "at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": ["mixin", "extend", "content", "include", "for", "function", "return"]
+      }
+    ],
+    "rule-empty-line-before": null,
+    "declaration-block-no-shorthand-property-overrides": null,
+    "no-descending-specificity": null
+  }
+}
