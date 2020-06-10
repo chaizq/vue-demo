@@ -1,23 +1,30 @@
 <template>
   <a-layout id="components-layout-demo-side" style="min-height: 100vh">
     <a-layout-sider v-model="collapsed" collapsible>
-      <div class="logo" />
+      <div class="logo"></div>
       <a-menu theme="dark" :default-selected-keys="['1']" mode="inline">
         <a-menu-item key="1">
           <a-icon type="pie-chart" />
-          <span>Option 1</span>
+          <span>Landing Page</span>
+          <router-link to="/landing"></router-link>
         </a-menu-item>
         <a-menu-item key="2">
           <a-icon type="desktop" />
-          <span>Option 2</span>
+          <span>User</span>
+          <router-link to="/user" ></router-link>
         </a-menu-item>
         <a-sub-menu key="sub1">
-          <span slot="title"><a-icon type="user" /><span>User</span></span>
+          <span slot="title">
+            <a-icon type="user" />
+            <span>User</span>
+          </span>
           <a-menu-item key="3">
-            Tom
+            User Management
+            <router-link to="/user/user-management" ></router-link>
           </a-menu-item>
           <a-menu-item key="4">
-            Bill
+            Menu Management
+            <router-link to="/user/menu-management" ></router-link>
           </a-menu-item>
           <a-menu-item key="5">
             Alex
@@ -39,9 +46,9 @@
       </a-menu>
     </a-layout-sider>
     <a-layout>
-      <a-layout-header style="background: #fff; padding: 0"></a-layout-header>
+      <a-layout-header style="background: #fff; padding: 0">Header</a-layout-header>
       <a-layout-content style="margin: 0 16px">
-        <a-breadcrumb style="margin: 16px 0">
+        <a-breadcrumb style="margin: 16px 0; text-align: left">
           <a-breadcrumb-item>User</a-breadcrumb-item>
           <a-breadcrumb-item>Bill</a-breadcrumb-item>
         </a-breadcrumb>

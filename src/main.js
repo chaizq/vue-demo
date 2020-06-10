@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
-import { Button, Layout, Menu, Breadcrumb, Icon } from 'ant-design-vue'
+import { Button, Layout, Menu, Breadcrumb, Icon, Col, Row } from 'ant-design-vue'
 import router from "../config/router/router.config"
 
 Vue.config.productionTip = false
@@ -22,8 +22,10 @@ Vue.component(Menu.Item.name, Menu.Item)
 Vue.component(VueRouter.name,VueRouter)
 // Button
 Vue.component(Button.name,Button)
-
+// Icon
 Vue.component(Icon.name,Icon)
+Vue.component(Col.name,Col)
+Vue.component(Row.name,Row)
 
 new Vue({
   el: '#app',

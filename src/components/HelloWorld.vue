@@ -28,7 +28,7 @@
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
-    <router-link to="/user" class="label">导航页</router-link>
+    <router-link to="/home" class="label">控制台</router-link>
   </div>
 </template>
 

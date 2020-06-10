@@ -1,12 +1,12 @@
 <template>
-  <label>USER PAGE</label>
+  <label>Menu Management</label>
 </template>
 
 <script>
 
   // import BasicLayout from "../../layouts/BasicLayout";
   export default {
-    name: "User",
+    name: "MenuManagement",
     components: {
       // BasicLayout
     }
