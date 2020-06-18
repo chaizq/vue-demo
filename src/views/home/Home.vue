@@ -1,5 +1,5 @@
 <template>
-  <a-layout id="components-layout-demo-side" style="min-height: 100vh">
+  <a-layout id="components-layout-demo-side" style="min-height: 100vh;">
     <Sider></Sider>
     <a-layout>
       <Header></Header>

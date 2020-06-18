@@ -20,5 +20,7 @@ function loadLocaleMessages () {
 export default new VueI18n({
   locale: process.env.VUE_APP_I18N_LOCALE || 'en',
   fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
-  messages: loadLocaleMessages()
+  messages: loadLocaleMessages(),
+  // 关闭i18n的warning提示
+  silentTranslationWarn: true
 })

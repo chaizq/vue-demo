@@ -1,4 +1,7 @@
 {
   "message": "hello i18n !!",
-  "Menu Management": "Menu Management"
+  "Configuration": "Configuration",
+  "Menu Management": "Menu Management",
+  "User Management": "User Management",
+  "Service": "Service"
 }

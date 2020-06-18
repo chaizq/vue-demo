@@ -9,6 +9,7 @@ import Configuration from "../../src/views/configuration/Configuration";
 import Home from "../../src/views/home/Home";
 import ServiceRegister from "../../src/views/service/ServiceRegister";
 import ServiceMonitor from "../../src/views/service/ServiceMonitor";
+import ApiManagement from "../../src/views/gateway/ApiManagement";
 Vue.use(VueRouter);
 // Vue.component(VueRouter.name, VueRouter)
 
@@ -68,6 +69,32 @@ const router = new VueRouter({
               name: 'Service Monitor',
               component: ServiceMonitor
             }
+          ]
+        },
+        {
+          path: "/api",
+          name: "api",
+          component: { render: h => h("router-view") },
+          children:[
+            {
+              path: '/api/management',
+              name: 'Api Management',
+              component: ApiManagement
+            },
+            {
+              path: '/api/monitor',
+              name: 'Api Monitor',
+              component: ServiceMonitor
+            }, {
+              path: '/api/pluginManagement',
+              name: 'Plugin Management',
+              component: ServiceMonitor
+            },
+            {
+              path: '/api/grayPub',
+              name: 'Gray Publish',
+              component: ServiceMonitor
+            },
           ]
         },
       ]
