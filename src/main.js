@@ -1,11 +1,17 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 import { Button, Layout, Menu, Breadcrumb, Icon, Col, Row, Table, Tabs, Input, Divider, Form, Select, } from 'ant-design-vue'
-import router from "../config/router/router.config"
+import router from "./router/router.config";
 import i18n from './i18n'
 
 Vue.config.productionTip = false
+
+// Axios
+Vue.use(VueAxios, axios)
+Vue.prototype.$axios = axios;
 
 // VueRouter
 Vue.component(VueRouter.name,VueRouter)
@@ -28,6 +34,7 @@ Vue.use(Select)
 new Vue({
   el: '#app',
   router,
+  axios,
   i18n,
   render: h => h(App)
 }).$mount('#app')

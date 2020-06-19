@@ -66,9 +66,10 @@
           </a-form-item>
           <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
             <a-button type="primary" @click="test" v-bind:disabled="btnStatus">Test</a-button>
+            <a-button type="primary" @click="test" >Enable Test</a-button>
           </a-form-item>
           <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-            <a-textarea :placeholder="res"  :rows="4" />
+            <a-textarea v-model="res" :placeholder=placeText  :rows="4" />
           </a-form-item>
           <a-form-item :wrapper-col="{ span: 12, offset: 5 }" style="text-align: left;" >
             <p>
@@ -102,6 +103,36 @@
     return 'test'
   }
 
+  // eslint-disable-next-line no-unused-vars,no-const-assign
+  function arrFillter() {
+    // const map = new Map();
+    const Arr =  [0.1,4,4,5,1,2,3,2,3];
+    let temp =[]
+    // eslint-disable-next-line no-unused-vars,no-const-assign
+    temp=Arr.filter((v) => {
+      return v>1;
+    })
+    return Array.from(new Set(temp))
+    // return Array.from(new Set(Arr))
+  }
+
+  function uniq(Arr,attr) {
+    if (typeof (Arr)==='undefined' || Arr===null){
+      return
+    }
+    const res = new Map();
+    // eslint-disable-next-line
+    return Arr.filter((item) =>  !res.has(item[attr]) && res.set(item[attr], 1))
+  }
+  // eslint-disable-next-line no-unused-vars,no-const-assign
+  function myTest(flag) {
+    const res = new Map();
+    if (flag && res.set('key', 1)){
+      console.log('TURE~')
+    }
+    return flag && res.set('key', 1)
+  }
+
   export default {
     name: 'ApiManagement',
     components: {
@@ -126,7 +157,8 @@
           'multipart/form-data',
         ],
         // res : processingStr(this.jsonObj),
-        res : 'mm',
+        res: 'a',
+        placeText: '',
 
       }
     },
@@ -134,7 +166,9 @@
     beforeMount() {
       this.form = this.$form.createForm(this, {name: 'ApiManagement'});
 
-      /*const chartData=[{label: "定点推送测试1", invkCount: 121, invkErrorCount: 101, executeTime: "49"},
+      // console.log(arrFillter());
+
+      const chartData=[{label: "定点推送测试1", invkCount: 121, invkErrorCount: 101, executeTime: "49"},
         {label: "机场流动人员信息查询", invkCount: 45, invkErrorCount: 26, executeTime: "43"},
         {label: "推送服务1", invkCount: 37, invkErrorCount: 36, executeTime: "11"},
         {label: "测试服务可用性", invkCount: 31, invkErrorCount: 27, executeTime: "9"},
@@ -148,7 +182,12 @@
         {label: "测试调阅数", invkCount: 4, invkErrorCount: 4, executeTime: "8"},
         {label: "定点推送测试1", invkCount: 3, invkErrorCount: 0, executeTime: "225"},
         {label: "定点推送测试1", invkCount: 44, invkErrorCount: 55, executeTime: "225"}
-      ]*/
+      ]
+
+      // console.log(uniq(chartData,"label"))
+      const dataUniq = uniq(chartData,"label");
+      this.placeText=dataUniq[0].executeTime;
+
 
       /*const res = new Map();
       let count = 1;
@@ -176,8 +215,16 @@
         console.log(this.form.getFieldsValue())
       },
       test () {
-        const aa = this.form.getFieldsValue()
-        console.log(aa.number)
+
+        let body = {"apiID":"ef79b0b37d914221a72b752b5dcacbd2"};
+        let url = `http://localhost:9000/di/apimgatewayconsole/ws/gateway/service/getApisByApiId?diToken=admin_cc96c50dd54c5641c6e721f6dc5110ca&apiId=${body.apiID}`
+        this.axios.post(`${url}`,body)
+            .then(res=>{
+              console.log('res=>',res);
+            })
+
+        const formData = this.form.getFieldsValue()
+        console.log(formData.version)
       },
       handleSelectChange(value) {
         console.log(value)

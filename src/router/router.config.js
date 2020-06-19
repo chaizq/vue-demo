@@ -2,21 +2,28 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
-import HelloWorld from "../../src/components/HelloWorld";
-import UserManagement from "../../src/views/user/UserManagement";
-import MenuManagement from "../../src/views/user/MenuManagement";
-import Configuration from "../../src/views/configuration/Configuration";
-import Home from "../../src/views/home/Home";
-import ServiceRegister from "../../src/views/service/ServiceRegister";
-import ServiceMonitor from "../../src/views/service/ServiceMonitor";
-import ApiManagement from "../../src/views/gateway/ApiManagement";
+import { constantRouterMap } from '@/config/router.config'
+/*import HelloWorld from "../src/components/HelloWorld";
+import UserManagement from "../src/pages/user/UserManagement";
+import MenuManagement from "../src/pages/user/MenuManagement";
+import Configuration from "../src/pages/configuration/Configuration";
+import Home from "../src/pages/home/Home";
+import ServiceRegister from "../src/pages/service/ServiceRegister";
+import ServiceMonitor from "../src/pages/service/ServiceMonitor";
+import ApiManagement from "../src/pages/gateway/ApiManagement";
+import Login from "../src/pages/login/Login";*/
 Vue.use(VueRouter);
 // Vue.component(VueRouter.name, VueRouter)
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes: [
+  /*routes: [
+    {
+      path: "/login",
+      name: "login",
+      component: Login,
+    },
     {
       path: "/landing",
       name: "landing",
@@ -100,7 +107,8 @@ const router = new VueRouter({
       ]
     },
 
-  ]
+  ],*/
+  routes: constantRouterMap,
 })
 
 // 路由守卫特效

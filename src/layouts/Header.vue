@@ -16,7 +16,6 @@
     text-align: left;
     background: #fff;
     padding: 0;
-
   }
   #layouts-header .logo {
     width: 120px;
