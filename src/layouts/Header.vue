@@ -27,15 +27,18 @@
   </span>
 </template>-->
 <template>
-  <a-layout-header id="layouts-header">
+
+  <a-layout-header id="layouts-header" className="ant-pro-global-header-index-right">
     <div class="logo"></div>
     Header Title Info
 
     <!--<a-dropdown v-if="currentUser && currentUser.name" placement="bottomRight">-->
+    <a-dropdown v-if="true" placement="bottomRight" class="header-line">
 
       <span class="ant-pro-account-avatar">
         <a-avatar size="small" src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png" class="antd-pro-global-header-index-avatar" />
-        <span>{{ currentUser.name }}</span>
+        <!--<span>{{ currentUser.name }}</span>-->
+        <span>Admin</span>
       </span>
       <template v-slot:overlay>
         <a-menu class="ant-pro-drop-down menu" :selected-keys="[]">
@@ -54,12 +57,15 @@
           </a-menu-item>
         </a-menu>
       </template>
+    </a-dropdown>
 
-   <!-- <span v-else>
+    <span v-else>
     <a-spin size="small" :style="{ marginLeft: 8, marginRight: 8 }" />
-  </span>-->
+  </span>
 
   </a-layout-header>
+
+
 </template>
 
 <script>
@@ -105,6 +111,7 @@
 </script>
 
 <style lang="less" scoped>
+  @import "~ant-design-vue/es/style/themes/default.less";
   #layouts-header {
     text-align: left;
     background: #fff;
@@ -125,15 +132,41 @@
       min-width: 160px;
     }
   }
-  .ant-pro-account-avatar {
-    /*
-    .antd-pro-global-header-index-avatar {
-      margin: ~'calc((@{layout-header-height} - 24px) / 2)' 0;
-      margin-right: 8px;
-      color: @primary-color;
-      vertical-align: top;
-      background: rgba(255, 255, 255, 0.85);
+
+  .header-line {
+    float: right;
+    margin-right: 50px;
+  }
+
+  .ant-pro-global-header-index-right {
+    &.ant-pro-global-header-index-dark {
+      .ant-pro-global-header-index-action {
+        color: hsla(0, 0%, 100%, .85);
+
+        &:hover {
+          background: #1890ff;
+        }
+      }
     }
-    */
+
+    .ant-pro-account-avatar {
+      .antd-pro-global-header-index-avatar {
+        margin: ~'calc((@{layout-header-height} - 24px) / 2)' 0;
+        margin-right: 8px;
+        color: @primary-color;
+        vertical-align: top;
+        background: rgba(255, 255, 255, 0.85);
+      }
+    }
+
+    .menu {
+      .anticon {
+        margin-right: 8px;
+      }
+
+      .ant-dropdown-menu-item {
+        min-width: 100px;
+      }
+    }
   }
 </style>
