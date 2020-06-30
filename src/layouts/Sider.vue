@@ -1,27 +1,42 @@
 <template>
-  <a-layout-sider class="layouts-sider" v-model="collapsed" collapsible>
+  <a-layout-sider class="layouts-sider" v-model="collapsed" :collapsible=true>
     <div class="logo"></div>
-    <a-menu theme="dark" :default-selected-keys="['1']" mode="inline">
-      <a-menu-item key="1" class="side-menu-label">
+    <a-menu theme="dark" :defaultOpenKeys="[`/${this.$route.path.split('/')[1].toString()}`]" :default-selected-keys="[this.$route.path]"  mode="inline">
+      <a-menu-item key="/home" class="side-menu-label">
+        <a-icon type="pie-chart" />
+        <span>Home Page</span>
+        <router-link to="/home"></router-link>
+      </a-menu-item>
+      <a-menu-item key="/landing" class="side-menu-label">
         <a-icon type="pie-chart" />
         <span>Landing Page</span>
         <router-link to="/landing"></router-link>
       </a-menu-item>
-      <a-menu-item key="2" class="side-menu-label">
+      <a-menu-item key="/configuration" class="side-menu-label">
         <a-icon type="desktop"/>
         <span>Config</span>
         <router-link to="/configuration" ></router-link>
       </a-menu-item>
-      <a-sub-menu key="sub1" class="side-menu-label">
+      <a-sub-menu key="/dashboard" class="side-menu-label">
+          <span slot="title">
+            <a-icon type="user" />
+            <span>Dashboard</span>
+          </span>
+        <a-menu-item key="/dashboard/analysis">
+          User Management
+          <router-link :to="{path:'/dashboard/analysis'}" ></router-link>
+        </a-menu-item>
+      </a-sub-menu>
+      <a-sub-menu key="/user" class="side-menu-label">
           <span slot="title">
             <a-icon type="user" />
             <span>User</span>
           </span>
-        <a-menu-item key="3">
+        <a-menu-item key="/user/user-management">
           User Management
           <router-link :to="{path:'/user/user-management'}" ></router-link>
         </a-menu-item>
-        <a-menu-item key="4">
+        <a-menu-item key="/user/menu-management">
           Menu Management
           <router-link :to="{path:'/user/menu-management'}" ></router-link>
         </a-menu-item>
@@ -29,38 +44,38 @@
           Alex
         </a-menu-item>
       </a-sub-menu>
-      <a-sub-menu key="sub-menu-service" class="side-menu-label">
+      <a-sub-menu key="/service" class="side-menu-label">
           <span slot="title">
             <a-icon type="menu-unfold" />
             <span>Service</span>
           </span>
-        <a-menu-item key="service-register">
+        <a-menu-item key="/service/register">
           Service Register
           <router-link :to="{path:'/service/register'}" ></router-link>
         </a-menu-item>
-        <a-menu-item key="service-monitor">
+        <a-menu-item key="/service/monitor">
           Service Monitor
           <router-link :to="{path:'/service/monitor'}" ></router-link>
         </a-menu-item>
       </a-sub-menu>
-      <a-sub-menu key="sub-menu-api" class="side-menu-label">
+      <a-sub-menu key="/api" class="side-menu-label">
           <span slot="title">
             <a-icon type="api" />
             <span>Gateway</span>
           </span>
-        <a-menu-item key="api-management">
+        <a-menu-item key="/api/management">
           Api Management
           <router-link :to="{path:'/api/management'}" ></router-link>
         </a-menu-item>
-        <a-menu-item key="api-monitor">
+        <a-menu-item key="/api/monitor">
           Api Monitor
           <router-link :to="{path:'/api/monitor'}" ></router-link>
         </a-menu-item>
-        <a-menu-item key="api-pluginManagement">
+        <a-menu-item key="/api/pluginManagement">
           Plugin Management
           <router-link :to="{path:'/api/pluginManagement'}" ></router-link>
         </a-menu-item>
-        <a-menu-item key="api-grayPub">
+        <a-menu-item key="/api/grayPub">
           Gray Publish
           <router-link :to="{path:'/api/grayPub'}" ></router-link>
         </a-menu-item>

@@ -27,7 +27,8 @@
             <a-input v-decorator="['upstreamUrl',
             { rules: [
             { required: true, message: 'Please input upstream url!' },
-            { pattern: standardHead,  message: '请输入以http:// 或https:// 开头的地址'}
+            { pattern: standardHead,  message: '请输入以http:// 或https:// 开头的地址'},
+            { whitespace: true, message: '输入值不可包含空格' }
 
             ]}]" />
           </a-form-item>
@@ -61,15 +62,24 @@
             <a-input v-decorator="['version', { rules: [{ required: true, message: 'Please input version number!' }] }]"/>
           </a-form-item>
 
+          <a-form-item label="备注" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+            <a-input v-decorator="['remarks', { rules: [{ max: 256, message: 'max length 256!' }] }]"/>
+          </a-form-item>
+
           <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
             <a-button type="primary" html-type="submit">Submit</a-button>
           </a-form-item>
           <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-            <a-button type="primary" @click="test" v-bind:disabled="btnStatus">Test</a-button>
-            <a-button type="primary" @click="test" >Enable Test</a-button>
+            <a-button
+                type="primary" @click="getFormData"
+                :disabled="isComplete(this.form.getFieldsValue(), ['remarks'])">
+              Get All
+            </a-button>
+            <a-button type="primary" @click="getVersionNum" >Get VersionNum</a-button>
+            <a-button type="primary" @click="getData" >Axios Test</a-button>
           </a-form-item>
           <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-            <a-textarea v-model="res" :placeholder=placeText  :rows="4" />
+            <a-textarea v-model="resData" :placeholder=placeText  :rows="4" />
           </a-form-item>
           <a-form-item :wrapper-col="{ span: 12, offset: 5 }" style="text-align: left;" >
             <p>
@@ -89,7 +99,8 @@
 </template>
 
 <script>
-  import AFormItem from "ant-design-vue/es/form/FormItem";
+  import { getCookie } from '@/utils/diUtil';
+  import { getApisByApiId } from '@/request/api';
 
   // eslint-disable-next-line no-unused-vars
   function processingStr(obj){
@@ -135,19 +146,14 @@
 
   export default {
     name: 'ApiManagement',
-    components: {
-      AFormItem
-    },
     data () {
       return {
         // 正则
         standardHead : /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Za-z0-9+&@#/%=~_|$?!:,.]*\)|[-A-Za-z0-9+&@#/%=~_|$?!:,.])*(?:\([-A-Za-z0-9+&@#/%=~_|$?!:,.]*\)|[A-Za-z0-9+&@#/%=~_|$])/,
         jsonObj:{"total":1,"_map_":"true","failureReason":"receiveTest: unknown error","failureTime":1592268767000,"id":"150f5511de6d4ffb9c4892db3ad43ee8","isAutoRetried":"F","lastFailureTime":1592268767000,"method":"GET","name":"推送测试0603","retryTimes":"0","serviceUrl":"http://receiveTest","subscriber":"user","type":"http","uri":"/urlTest","user":"admin"},
-
-        btnStatus:true,
+        ApiManagementForm: this.form,
+        btnStatus: true,
         routeName: this.$route.name,
-        // { name: 'ApiManagement' }是options配置项，防止其他表格属性值重名
-        // form: this.$form.createForm(this, { name: 'ApiManagement' }),
         bodyFormatTypes: [
           'application/json',
           'application/xml',
@@ -157,14 +163,18 @@
           'multipart/form-data',
         ],
         // res : processingStr(this.jsonObj),
-        res: 'a',
+        resData: "Text Area初始值",
         placeText: '',
-
       }
     },
 
+    created() {
+      this.getData();
+    },
+
     beforeMount() {
-      this.form = this.$form.createForm(this, {name: 'ApiManagement'});
+      // { name: 'ApiManagement' }是options配置项，防止其他表格属性值重名
+      this.form = this.$form.createForm(this, {name: 'ApiManagementForm', onValuesChange:this.onValuesChange});
 
       // console.log(arrFillter());
 
@@ -187,8 +197,6 @@
       // console.log(uniq(chartData,"label"))
       const dataUniq = uniq(chartData,"label");
       this.placeText=dataUniq[0].executeTime;
-
-
       /*const res = new Map();
       let count = 1;
       for(let item of chartData) {
@@ -199,32 +207,52 @@
         }
       }
       console.log(res);*/
-
     },
     methods: {
       handleSubmit (e) {
         e.preventDefault()
         this.form.validateFieldsAndScroll((err, values) => {
           if (!err) {
-            this.btnStatus=false;
+            this.btnStatus = false;
             console.log('Received values of form: ', values)
           } else {
-            this.btnStatus=true;
+            this.btnStatus = true;
           }
         })
         console.log(this.form.getFieldsValue())
       },
-      test () {
+      getData () {
+        const param ={
+          body: {
+            "apiID": "ef79b0b37d914221a72b752b5dcacbd2"
+          },
+          queryParam:{
+            diToken: getCookie('diToken'),
+            apiID: "ef79b0b37d914221a72b752b5dcacbd2",
+          }
+        }
 
+        getApisByApiId(param).then(res => {
+          console.log('Axios Res=>',res)
+          this.resData=JSON.stringify(res)
+        })
+        /*const diToken = getCookie('diToken');
         let body = {"apiID":"ef79b0b37d914221a72b752b5dcacbd2"};
-        let url = `http://localhost:9000/di/apimgatewayconsole/ws/gateway/service/getApisByApiId?diToken=admin_cc96c50dd54c5641c6e721f6dc5110ca&apiId=${body.apiID}`
+        let url = `http://localhost:9000/di/apimgatewayconsole/ws/gateway/service/getApisByApiId?diToken=${diToken}&apiId=${body.apiID}`
+
         this.axios.post(`${url}`,body)
             .then(res=>{
               console.log('res=>',res);
-            })
-
+            })*/
+      },
+      getVersionNum () {
         const formData = this.form.getFieldsValue()
         console.log(formData.version)
+      },
+      getFormData () {
+        const formData = this.form.getFieldsValue()
+        console.log(formData)
+        return formData
       },
       handleSelectChange(value) {
         console.log(value)
@@ -239,15 +267,22 @@
         //     'version': value
         //   })
         // },0)
-
       },
 
+      isComplete (form, except) {
+        if (JSON.stringify(form) === "{}" || form===null || typeof (form)==="undefined") return true
+        for (let i in form) {
+          // eslint-disable-next-line no-prototype-builtins
+          if(!form.hasOwnProperty(i)) continue;
+          if (except.includes(i)) continue;
+          if (typeof form[i]==="undefined" || form[i] === null || form[i]==='' ) return true
+        }
+        return false
+      }
 
-    }
+    },
   }
-
 </script>
-
 
 <style lang="less" scoped>
   .body {

@@ -1,289 +1,355 @@
 <template>
-  <a-col :span="12">
-    <div class="login-body">
-      <a-form
-          id="formLogin"
-          class="user-layout-login"
-          ref="formLogin"
-          :form="form"
-          @submit="handleSubmit"
+  <div class="main">
+    <a-form
+      id="formLogin"
+      class="user-layout-login"
+      ref="formLogin"
+      :form="form"
+      @submit="handleSubmit"
+    >
+      <a-tabs
+        :activeKey="customActiveKey"
+        :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
+        @change="handleTabClick"
       >
-        <a-tabs
-            :activeKey="customActiveKey"
-            :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
-            @change="handleTabClick"
-        >
-          <a-tab-pane key="tab1" tab="账号密码登录">
-            <a-alert v-if="isLoginError" type="error" showIcon message="账户或密码错误"/>
-            <br />
-            <a-form-item>
-              <a-input
-                  size="large"
-                  type="text"
-                  placeholder="请输入帐户"
-                  v-decorator="[
-                      'account',
-                      {rules: [{ required: true, message: '请输入帐户' }], validateTrigger: 'change'}
-                    ]"
-              >
-                <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
-              </a-input>
-            </a-form-item>
-
-            <a-form-item>
-              <a-input
-                  size="large"
-                  type="password"
-                  autocomplete="false"
-                  placeholder="请输入密码"
-                  v-decorator="[
-                      'password',
-                      {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
-                    ]"
-              >
-                <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
-              </a-input>
-            </a-form-item>
-          </a-tab-pane>
-        </a-tabs>
-
-        <a-form-item style="margin-top:24px">
-          <a-button
+        <a-tab-pane key="tab1" tab="账号密码登录">
+          <a-alert v-if="isLoginError" type="error" showIcon style="margin-bottom: 24px;" message="账户或密码错误（admin/ant.design )" />
+          <a-form-item>
+            <a-input
               size="large"
-              type="primary"
-              htmlType="submit"
-              class="login-button"
-              :loading="state.loginBtn"
-              :disabled="state.loginBtn"
-          >登录</a-button>
-        </a-form-item>
-      </a-form>
-    </div>
-  </a-col>
+              type="text"
+              placeholder="账户: admin"
+              v-decorator="[
+                'username',
+                {rules: [{ required: true, message: '请输入帐户名或邮箱地址' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
+              ]"
+            >
+              <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+            </a-input>
+          </a-form-item>
+
+          <a-form-item>
+            <a-input-password
+              size="large"
+              placeholder="密码: admin or ant.design"
+              v-decorator="[
+                'password',
+                {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
+              ]"
+            >
+              <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+            </a-input-password>
+          </a-form-item>
+        </a-tab-pane>
+        <a-tab-pane key="tab2" tab="手机号登录">
+          <a-form-item>
+            <a-input size="large" type="text" placeholder="手机号" v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' }], validateTrigger: 'change'}]">
+              <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+            </a-input>
+          </a-form-item>
+
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="16">
+              <a-form-item>
+                <a-input size="large" type="text" placeholder="验证码" v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]">
+                  <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                </a-input>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="8">
+              <a-button
+                class="getCaptcha"
+                tabindex="-1"
+                :disabled="state.smsSendBtn"
+                @click.stop.prevent="getCaptcha"
+                v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"
+              ></a-button>
+            </a-col>
+          </a-row>
+        </a-tab-pane>
+      </a-tabs>
+
+      <a-form-item>
+        <a-checkbox v-decorator="['rememberMe', { valuePropName: 'checked' }]">自动登录</a-checkbox>
+        <router-link
+          :to="{ name: 'recover', params: { user: 'aaa'} }"
+          class="forge-password"
+          style="float: right;"
+        >忘记密码</router-link>
+      </a-form-item>
+
+      <a-form-item style="margin-top:24px;">
+        <a-button
+          size="large"
+          type="primary"
+          htmlType="submit"
+          class="login-button"
+          :loading="state.loginBtn"
+          :disabled="state.loginBtn"
+        >确定</a-button>
+      </a-form-item>
+
+      <div class="user-login-other">
+        <span>其他登录方式</span>
+        <a>
+          <a-icon class="item-icon" type="alipay-circle"></a-icon>
+        </a>
+        <!--<a>
+          <a-icon class="item-icon" type="taobao-circle"></a-icon>
+        </a>-->
+        <a>
+          <a-icon class="item-icon" type="weibo-circle"></a-icon>
+        </a>
+        <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>
+      </div>
+    </a-form>
+
+    <two-step-captcha
+      v-if="requiredTwoStepCaptcha"
+      :visible="stepCaptchaVisible"
+      @success="stepCaptchaSuccess"
+      @cancel="stepCaptchaCancel"
+    ></two-step-captcha>
+  </div>
 </template>
 
 <script>
+import md5 from 'md5'
+import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
+import { mapActions } from 'vuex'
+import { timeFix } from '@/utils/util'
+import { getSmsCaptcha, get2step } from '@/request/login'
 
-  export default {
-    name: 'Login',
-    data() {
-      const validateUsername = (rule, value, callback) => {
-        callback()
-      }
-      const validatePassword = (rule, value, callback) => {
-        if (value.length < 6) {
-          callback(new Error('密码不低于六位数！'))
-        } else {
-          callback()
-        }
-      }
-      return {
-        loginForm: {
-          username: '',
-          password: ''
-        },
-        loginRules: {
-          username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-          password: [{ required: true, trigger: 'blur', validator: validatePassword }]
-        },
-        loading: false,
-        passwordType: 'password',
-        redirect: undefined,
-        checked: false
-      }
-    },
-    mounted() {
-      this.getCookie()
-    },
-    watch: {
-      $route: {
-        handler: function(route) {
-          this.redirect = route.query && route.query.redirect
-        },
-        immediate: true
-      }
-    },
-    methods: {
-      showPwd() {
-        if (this.passwordType === 'password') {
-          this.passwordType = ''
-        } else {
-          this.passwordType = 'password'
-        }
-        this.$nextTick(() => {
-          this.$refs.password.focus()
-        })
-      },
-      handleLogin() {
-        this.$refs.loginForm.validate(valid => {
-          if (valid) {
-            if (this.checked) {
-              this.setCookie(this.loginForm.username, this.loginForm.password, 7)
-            } else {
-              this.clearCookie()
-            }
-            this.loading = true
-            this.$store.dispatch('user/login', this.loginForm).then(() => {
-              this.$router.push({ path: this.redirect || '/' })
-              this.loading = false
-            }).catch(() => {
-              this.loading = false
-            })
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        })
-      },
-      setCookie(c_name, c_pwd, exdays) {
-        const exdate = new Date()
-        exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays)
-        window.document.cookie = 'userName' + '=' + c_name + ';path=/;expires=' + exdate.toGMTString()
-        window.document.cookie = 'password' + '=' + c_pwd + ';path=/;expires=' + exdate.toGMTString()
-      },
-      getCookie: function() {
-        if (document.cookie.length > 0) {
-          const arr = document.cookie.split('; ')
-          for (let i = 0; i < arr.length; i++) {
-            const arr2 = arr[i].split('=')
-            if (arr2[0] === 'userName') {
-              this.loginForm.username = arr2[1]
-            } else if (arr2[0] === 'password') {
-              this.loginForm.password = arr2[1]
-            }
-          }
-          this.checked = true
-        }
-      },
-      clearCookie: function() {
-        this.setCookie('', '', -1)
+// 假登录临时接口调用
+import { getCookie } from '@/utils/diUtil';
+import { getApisByApiId } from '@/request/api'
+
+export default {
+  components: {
+    TwoStepCaptcha
+  },
+  data () {
+    return {
+      customActiveKey: 'tab1',
+      loginBtn: false,
+      // login type: 0 email, 1 username, 2 telephone
+      loginType: 0,
+      isLoginError: false,
+      requiredTwoStepCaptcha: false,
+      stepCaptchaVisible: false,
+      form: this.$form.createForm(this),
+      state: {
+        time: 60,
+        loginBtn: false,
+        // login type: 0 email, 1 username, 2 telephone
+        loginType: 0,
+        smsSendBtn: false
       }
     }
+  },
+  created () {
+    get2step({ })
+      .then(res => {
+        this.requiredTwoStepCaptcha = res.result.stepCode
+      })
+      .catch(() => {
+        this.requiredTwoStepCaptcha = false
+      })
+    // this.requiredTwoStepCaptcha = true
+  },
+  methods: {
+    ...mapActions(['Login', 'Logout']),
+    // handler
+    handleUsernameOrEmail (rule, value, callback) {
+      const { state } = this
+      const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/
+      if (regex.test(value)) {
+        state.loginType = 0
+      } else {
+        state.loginType = 1
+      }
+      callback()
+    },
+    handleTabClick (key) {
+      this.customActiveKey = key
+      // this.form.resetFields()
+    },
+    handleSubmit (e) {
+      e.preventDefault()
+      const {
+        form: { validateFields },
+        state,
+        customActiveKey,
+        // Login
+      } = this
+
+      state.loginBtn = true
+
+      const validateFieldsKey = customActiveKey === 'tab1' ? ['username', 'password'] : ['mobile', 'captcha']
+
+      validateFields(validateFieldsKey, { force: true }, (err, values) => {
+        if (!err) {
+          console.log('login form', values)
+
+          const loginParams = { ...values }
+          delete loginParams.username
+          loginParams[!state.loginType ? 'email' : 'username'] = values.username
+          loginParams.password = md5(values.password)
+
+          /*Login(loginParams)
+              .then((res) => this.loginSuccess(res))
+              .catch(err => this.requestFailed(err))
+              .finally(() => {
+                state.loginBtn = false
+              })*/
+
+          //调用接口,模拟登录，目前是该接口正常返回res即可进入/home，完成登录
+          const paramExample ={
+            body: {
+              "apiID": "ef79b0b37d914221a72b752b5dcacbd2"
+            },
+            queryParam:{
+              diToken: getCookie('diToken'),
+              apiID: "ef79b0b37d914221a72b752b5dcacbd2",
+            }
+          }
+
+          getApisByApiId(paramExample)
+              .then((res) => this.loginSuccess(res))
+              .catch(err => this.requestFailed(err))
+              .finally(() => {
+                state.loginBtn = false
+              })
+
+        } else {
+          setTimeout(() => {
+            state.loginBtn = false
+          }, 600)
+        }
+      })
+    },
+    getCaptcha (e) {
+      e.preventDefault()
+      const { form: { validateFields }, state } = this
+
+      validateFields(['mobile'], { force: true }, (err, values) => {
+        if (!err) {
+          state.smsSendBtn = true
+
+          const interval = window.setInterval(() => {
+            if (state.time-- <= 0) {
+              state.time = 60
+              state.smsSendBtn = false
+              window.clearInterval(interval)
+            }
+          }, 1000)
+
+          const hide = this.$message.loading('验证码发送中..', 0)
+          getSmsCaptcha({ mobile: values.mobile }).then(res => {
+            setTimeout(hide, 2500)
+            this.$notification['success']({
+              message: '提示',
+              description: '验证码获取成功，您的验证码为：' + res.result.captcha,
+              duration: 8
+            })
+          }).catch(err => {
+            setTimeout(hide, 1)
+            clearInterval(interval)
+            state.time = 60
+            state.smsSendBtn = false
+            this.requestFailed(err)
+          })
+        }
+      })
+    },
+    stepCaptchaSuccess () {
+      this.loginSuccess()
+    },
+    stepCaptchaCancel () {
+      this.Logout().then(() => {
+        this.loginBtn = false
+        this.stepCaptchaVisible = false
+      })
+    },
+    loginSuccess (res) {
+      console.log(res)
+      // check res.homePage define, set $router.push name res.homePage
+      // Why not enter onComplete
+      /*
+      this.$router.push({ name: 'analysis' }, () => {
+        console.log('onComplete')
+        this.$notification.success({
+          message: '欢迎',
+          description: `${timeFix()}，欢迎回来`
+        })
+      })
+      */
+      this.$router.push({ path: '/home' })
+      // 延迟 1 秒显示欢迎信息
+      setTimeout(() => {
+        this.$notification.success({
+          message: '欢迎',
+          description: `${timeFix()}，欢迎回来`
+        })
+      }, 1000)
+      this.isLoginError = false
+    },
+    requestFailed (err) {
+      this.isLoginError = true
+      this.$notification['error']({
+        message: '错误',
+        description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
+        duration: 4
+      })
+    }
   }
+}
 </script>
 
-<style lang="less">
-  /* 修复input 背景不协调 和光标变色 */
-
-  @bg:#283443;
-  @light_gray:#fff;
-  @cursor:#fff;
-
-  @supports (-webkit-mask: none) and (not (cater-color: @cursor)) {
-    .login-container .el-input input {
-      color: @cursor;
-    }
-  }
-
-  /* reset element-ui css */
-  .login-container {
-    .el-input {
-      display: inline-block;
-      height: 47px;
-      width: 85%;
-
-      input {
-        background: transparent;
-        border: 0;
-        -webkit-appearance: none;
-        border-radius: 0;
-        padding: 12px 5px 12px 15px;
-        color: @light_gray;
-        height: 47px;
-        caret-color: @cursor;
-
-        &:-webkit-autofill {
-          box-shadow: 0 0 0 1000px @bg inset !important;
-          -webkit-text-fill-color: @cursor !important;
-        }
-      }
-      .rf {
-        float: right;
-      }
-      .box {
-        min-width: 350px;
-        margin-left: 50px;
-        width: 30%;
-      }
-      // eslint-disable-next-line
-      /*.clearfix: a-form {*/
-      /*  content: ".";*/
-      /*  display: block;*/
-      /*  height: 0;*/
-      /*  visibility: hidden;*/
-      /*  clear: both;*/
-      /*}*/
-    }
-
-    .el-form-item {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-      color: #454545;
-    }
-  }
-</style>
-
 <style lang="less" scoped>
-  @bg:#2d3a4b;
-  @dark_gray:#889aa4;
-  @light_gray:#eee;
+.user-layout-login {
+  label {
+    font-size: 14px;
+  }
 
-  .login-container {
-    min-height: 100%;
+  .getCaptcha {
+    display: block;
     width: 100%;
-    background-color: @bg;
-    overflow: hidden;
+    height: 40px;
+  }
 
-    .login-form {
-      position: relative;
-      width: 520px;
-      max-width: 100%;
-      padding: 160px 35px 0;
-      margin: 0 auto;
-      overflow: hidden;
-    }
+  .forge-password {
+    font-size: 14px;
+  }
 
-    .tips {
-      font-size: 14px;
-      color: #fff;
-      margin-bottom: 10px;
+  button.login-button {
+    padding: 0 15px;
+    font-size: 16px;
+    height: 40px;
+    width: 100%;
+  }
 
-      span {
-        &:first-of-type {
-          margin-right: 16px;
-        }
-      }
-    }
+  .user-login-other {
+    text-align: left;
+    margin-top: 24px;
+    line-height: 22px;
 
-    .svg-container {
-      padding: 6px 5px 6px 15px;
-      color: @dark_gray;
+    .item-icon {
+      font-size: 24px;
+      color: rgba(0, 0, 0, 0.2);
+      margin-left: 16px;
       vertical-align: middle;
-      width: 30px;
-      display: inline-block;
-    }
+      cursor: pointer;
+      transition: color 0.3s;
 
-    .title-container {
-      position: relative;
-
-      .title {
-        font-size: 26px;
-        color: @light_gray;
-        margin: 0 auto 40px auto;
-        text-align: center;
-        font-weight: bold;
+      &:hover {
+        color: #1890ff;
       }
     }
 
-    .show-pwd {
-      position: absolute;
-      right: 10px;
-      top: 7px;
-      font-size: 16px;
-      color: @dark_gray;
-      cursor: pointer;
-      user-select: none;
+    .register {
+      float: right;
     }
   }
+}
 </style>

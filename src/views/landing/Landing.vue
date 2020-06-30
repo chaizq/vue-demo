@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <img alt="Vue logo" src="../assets/logo.png">
+    <img alt="Vue logo" src="@/assets/logo.png">
     <h1>{{ msg }}</h1>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
@@ -28,7 +28,9 @@
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
-    <router-link to="/home" class="label">控制台</router-link>
+    <router-link to="/home" class="label" disabled><a-button type="primary" disabled>控制台</a-button></router-link>
+    &nbsp;&nbsp;
+    <router-link to="/user/login" class="label"><a-button type="primary">登录页</a-button></router-link>
   </div>
 </template>
 
@@ -57,10 +59,9 @@
   a {
     color: #42b983;
   }
-  .label{
+  .label {
     color: crimson;
     font-weight: bolder;
     font-size: medium;
-
   }
 </style>

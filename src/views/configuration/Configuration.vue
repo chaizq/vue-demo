@@ -16,9 +16,7 @@
     data() {
       return {
         routeName: this.$route.name
-
       }
-
     },
     name: "Configuration"
   }

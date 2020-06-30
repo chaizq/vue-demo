@@ -11,10 +11,11 @@
   </a-layout>
 </template>
 <script>
-  import Sider from "../../layouts/Sider";
-  import Footer from "../../layouts/Footer";
-  import Header from "../../layouts/Header";
+  import Sider from "./Sider";
+  import Footer from "./Footer";
+  import Header from "./Header";
   export default {
+    name:'BasicLayout',
     components: {Header, Footer, Sider},
     data() {
       return {
@@ -24,7 +25,7 @@
   };
 </script>
 
-<style>
+<style lang="less">
   #components-layout-demo-side .logo {
     height: 32px;
     background: rgba(255, 255, 255, 0.2);
