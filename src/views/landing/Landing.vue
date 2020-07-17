@@ -30,7 +30,7 @@
     </ul>
     <router-link to="/home" class="label" disabled><a-button type="primary" disabled>控制台</a-button></router-link>
     &nbsp;&nbsp;
-    <router-link to="/user/login" class="label"><a-button type="primary">登录页</a-button></router-link>
+    <router-link to="/login" class="label"><a-button type="primary">登录页</a-button></router-link>
   </div>
 </template>
 

@@ -25,7 +25,7 @@
   ],
   "rules": {
     "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
-    "no-debugger": 1
-    // "no-unused-vars": "off"
+    "no-debugger": 1,
+    "no-unused-vars": "off"
   }
 }

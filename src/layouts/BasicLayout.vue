@@ -16,7 +16,7 @@
   import Header from "./Header";
   export default {
     name:'BasicLayout',
-    components: {Header, Footer, Sider},
+    components: { Header, Footer, Sider },
     data() {
       return {
         collapsed: false,

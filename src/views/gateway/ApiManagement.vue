@@ -99,8 +99,8 @@
 </template>
 
 <script>
-  import { getCookie } from '@/utils/diUtil';
-  import { getApisByApiId } from '@/request/api';
+  // import { getCookie } from '@/utils/diUtil';
+  // import { getApisByApiId } from '@/request/general';
 
   // eslint-disable-next-line no-unused-vars
   function processingStr(obj){
@@ -173,7 +173,7 @@
     },
 
     beforeMount() {
-      // { name: 'ApiManagement' }是options配置项，防止其他表格属性值重名
+      // 下一行的{ name: 'ApiManagement' }是options配置项，防止其他表格属性值重名
       this.form = this.$form.createForm(this, {name: 'ApiManagementForm', onValuesChange:this.onValuesChange});
 
       // console.log(arrFillter());
@@ -222,7 +222,7 @@
         console.log(this.form.getFieldsValue())
       },
       getData () {
-        const param ={
+        /*const param ={
           body: {
             "apiID": "ef79b0b37d914221a72b752b5dcacbd2"
           },
@@ -235,7 +235,8 @@
         getApisByApiId(param).then(res => {
           console.log('Axios Res=>',res)
           this.resData=JSON.stringify(res)
-        })
+        })*/
+
         /*const diToken = getCookie('diToken');
         let body = {"apiID":"ef79b0b37d914221a72b752b5dcacbd2"};
         let url = `http://localhost:9000/di/apimgatewayconsole/ws/gateway/service/getApisByApiId?diToken=${diToken}&apiId=${body.apiID}`
@@ -298,14 +299,14 @@
 <!--页面局部国际化设置-->
 <i18n>
   {
-  "en": {
-  "service list": "Service List",
-  "model list": "Model List"
-  },
-  "zh":{
-  "service list": "服务列表",
-  "model list": "实例列表",
-  "Service Register": "服务注册"
-  }
+    "en": {
+      "service list": "Service List",
+      "model list": "Model List"
+    },
+    "zh": {
+      "service list": "服务列表",
+      "model list": "实例列表",
+      "Service Register": "服务注册"
+    }
   }
 </i18n>

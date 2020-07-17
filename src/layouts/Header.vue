@@ -85,23 +85,26 @@
     },
     methods: {
       handleToCenter () {
-        this.$router.push({ path: '/account/center' })
+        this.$router.push({ path: '/user/user-management' })
       },
       handleToSettings () {
-        this.$router.push({ path: '/account/settings' })
+        this.$router.push({ path: '/user/settings' })
       },
       // eslint-disable-next-line no-unused-vars
       handleLogout (e) {
         Modal.confirm({
-          title: this.$t('layouts.usermenu.dialog.title'),
-          content: this.$t('layouts.usermenu.dialog.content'),
+          title: this.$t('Do you want to log out'),
+          content: this.$t('Log out and return to the login page'),
           onOk: () => {
             // return new Promise((resolve, reject) => {
             //   setTimeout(Math.random() > 0.5 ? resolve : reject, 1500)
             // }).catch(() => console.log('Oops errors!'))
-            return this.$store.dispatch('Logout').then(() => {
-              this.$router.push({ name: 'login' })
-            })
+
+            this.$router.push({ name: 'login' })
+
+            // return this.$store.dispatch('Logout').then(() => {
+            //   this.$router.push({ name: 'loginPage' })
+            // })
           },
           onCancel () {}
         })
@@ -136,12 +139,16 @@
   .header-line {
     float: right;
     margin-right: 50px;
+    padding: 0 15px;
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
   }
 
   .ant-pro-global-header-index-right {
     &.ant-pro-global-header-index-dark {
       .ant-pro-global-header-index-action {
-        color: hsla(0, 0%, 100%, .85);
+        color: hsla(0, 0%, 100%, 0.85);
 
         &:hover {
           background: #1890ff;
@@ -170,3 +177,17 @@
     }
   }
 </style>
+
+<!--页面局部国际化设置-->
+<i18n>
+  {
+  "en": {
+  "Do you want to log out": "Do you want to log out",
+  "Log out and return to the login page": "Log out and return to the login page"
+  },
+  "zh": {
+  "Do you want to log out": "是否登出",
+  "Log out and return to the login page": "登出账户并返回登录页"
+  }
+  }
+</i18n>

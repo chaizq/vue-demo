@@ -122,7 +122,7 @@ import { getSmsCaptcha, get2step } from '@/request/login'
 
 // 假登录临时接口调用
 import { getCookie } from '@/utils/diUtil';
-import { getApisByApiId } from '@/request/api'
+import { getApisByApiId } from '@/request/general'
 
 export default {
   components: {

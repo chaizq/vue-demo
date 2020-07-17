@@ -12,6 +12,7 @@
     "lint:fix": "eslint --fix --ext .js src mock tests && stylelint --fix 'src/**/*.less' --syntax less"
   },
   "dependencies": {
+    "@ant-design-vue/pro-layout": "^0.3.3",
     "@antv/data-set": "^0.11.4",
     "ant-design-vue": "^1.6.2",
     "axios": "^0.19.2",
@@ -42,7 +43,8 @@
     "stylelint-config-standard": "^20.0.0",
     "stylelint-order": "^4.1.0",
     "vue-cli-plugin-i18n": "~1.0.1",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "webpack-theme-color-replacer": "^1.3.12"
   },
   "eslintConfig": {
     "root": true,
