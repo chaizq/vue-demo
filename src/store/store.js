@@ -6,6 +6,7 @@ Vue.use(Vuex);
 
 const state= {
   user:"default",
+  personId: '',
   apiMonitorData:[
     {Count: 489, Time: "2018/8/8 0:00"},
     {Count: 200, Time: "2018/8/8 2:00"},
@@ -13,35 +14,47 @@ const state= {
   ],
 }
 // actions是异步的,用于写业务代码
-const actions={
-   changeUser(context, name){
-     console.log("action", context, name);
-     context.commit("changeUser", name);
+const actions = {
+   changeUser(context, data){
+     console.log("action", context, data);
+     context.commit("setUser", data);
    },
   getApiMonitorData(context) {
     // public文件夹中的静态内容文件访问'/siteUV.json'
     request.get('/siteUV.json')
       .then(res =>{
-        context.commit('getApiMonitorData', res.data)
+        context.commit('setApiMonitorData', res.data)
       })
       .catch(err =>{
         console.log(`code ${err.code}: ${err.message}`)
       })
-  }
+  },
+
+  changePersonId(context, id) {
+    context.commit("setPersonId", id);
+  },
 }
 // mutations是同步的,用于更新state状态
 const mutations= {
-  changeUser(state, name){
-    console.log("mutation", state, name);
-    state.user = name;
+  setUser(state, data){
+    console.log("mutation", state, data);
+    state.user = data;
   },
-  getApiMonitorData(state, data){
+  setApiMonitorData(state, data){
     state.apiMonitorData = data
-  }
+  },
+  setPersonId(state, id) {
+    state.personId = id
+  },
 }
-
+const getters={
+  user: state => state.user,
+  personId: state => state.personId
+  // gatewayToken: state => state.gatewayToken,
+}
 export default new Vuex.Store({
   state,
   actions,
   mutations,
+  getters
 })

@@ -112,6 +112,8 @@
 
 <script>
 
+  import {mapGetters} from 'vuex'
+
   const routes = [
     {
       path: 'index',
@@ -143,6 +145,12 @@
 
   export default {
     name: 'CardList',
+    computed:{
+      ...mapGetters([
+        'user',
+        'personId'
+      ]),
+    },
     data () {
       this.tabList = [
         { key: 'tab1', tab: '服务列表' },
@@ -156,6 +164,12 @@
         dataSource,
         routes
       }
+    },
+    created() {
+      // 改变state中的personId为ID_001
+      this.$store.dispatch('changePersonId','ID_001')
+      // 取state中的personId值
+      console.log(this.personId)
     },
     methods: {
       testFun () {
