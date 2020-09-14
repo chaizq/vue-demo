@@ -159,7 +159,6 @@
       ]
       return {
         tabActiveKey: 'tab1',
-
         extraImage: 'https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png',
         dataSource,
         routes
